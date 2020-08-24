@@ -7,10 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import java.awt.Color;
 
 public class countdown {
 
-	private JFrame frame;
+	private JFrame frmBabyCountdown;
 
 	/**
 	 * Launch the application.
@@ -20,7 +21,7 @@ public class countdown {
 			public void run() {
 				try {
 					countdown window = new countdown();
-					window.frame.setVisible(true);
+					window.frmBabyCountdown.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,36 +61,36 @@ public class countdown {
 		String countDesc = "for Baby Seer to arrive";
 		
 		
-		frame = new JFrame();
-		frame.getContentPane().setFont(new Font("Keraleeyam", Font.PLAIN, 12));
-		frame.getContentPane().setBackground(UIManager.getColor("Button.disabledToolBarBorderBackground"));
-		frame.setBounds(100, 100, 410, 247);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmBabyCountdown = new JFrame();
+		frmBabyCountdown.setTitle("Baby Countdown");
+		frmBabyCountdown.getContentPane().setFont(new Font("SansSerif", Font.PLAIN, 12));
+		frmBabyCountdown.setBounds(100, 100, 410, 247);
+		frmBabyCountdown.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmBabyCountdown.getContentPane().setLayout(null);
 		
 		JLabel lblTitle = new JLabel("BABY COUNTDOWN");		
-		lblTitle.setFont(new Font("Keraleeyam", Font.PLAIN, 40));
+		lblTitle.setFont(new Font("SansSerif", Font.PLAIN, 34));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setBounds(0, 12, 400, 52);
-		frame.getContentPane().add(lblTitle);		
+		frmBabyCountdown.getContentPane().add(lblTitle);		
 		
 		JLabel lblWeeks = new JLabel(weeks);
 		lblWeeks.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWeeks.setFont(new Font("Keraleeyam", Font.PLAIN, 33));
-		lblWeeks.setBounds(137, 71, 116, 38);
-		frame.getContentPane().add(lblWeeks);
+		lblWeeks.setFont(new Font("SansSerif", Font.PLAIN, 29));
+		lblWeeks.setBounds(100, 71, 181, 38);
+		frmBabyCountdown.getContentPane().add(lblWeeks);
 		
 		
 		JLabel lblDays = new JLabel(sDays);
 		lblDays.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDays.setFont(new Font("Keraleeyam", Font.PLAIN, 33));
+		lblDays.setFont(new Font("SansSerif", Font.PLAIN, 29));
 		lblDays.setBounds(137, 110, 116, 38);
-		frame.getContentPane().add(lblDays);
+		frmBabyCountdown.getContentPane().add(lblDays);
 		
 		JLabel lblForBabySeer = new JLabel(countDesc);
 		lblForBabySeer.setHorizontalAlignment(SwingConstants.CENTER);
-		lblForBabySeer.setFont(new Font("Keraleeyam", Font.PLAIN, 24));
+		lblForBabySeer.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblForBabySeer.setBounds(67, 160, 282, 38);
-		frame.getContentPane().add(lblForBabySeer);
+		frmBabyCountdown.getContentPane().add(lblForBabySeer);
 	}
 }
