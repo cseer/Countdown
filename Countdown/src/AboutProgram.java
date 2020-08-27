@@ -12,6 +12,7 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 @SuppressWarnings("serial")
 public class AboutProgram extends JDialog {
@@ -35,6 +36,7 @@ public class AboutProgram extends JDialog {
 	 * Create the dialog.
 	 */
 	public AboutProgram() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AboutProgram.class.getResource("/SmallIcons/Information24.png")));
 		setTitle("About Baby Countdown");
 		setBounds(100, 100, 384, 216);
 		getContentPane().setLayout(new BorderLayout());
@@ -44,14 +46,14 @@ public class AboutProgram extends JDialog {
 		
 		JTextPane txtpnAboutBabyCountdown = new JTextPane();
 		txtpnAboutBabyCountdown.setFont(new Font("SansSerif", Font.ITALIC, 14));
-		txtpnAboutBabyCountdown.setText("Baby Countdown v1.1\n\nCopyright 2020 Carlos Seer");
-		txtpnAboutBabyCountdown.setBounds(169, 29, 215, 90);
+		txtpnAboutBabyCountdown.setText("Baby Countdown v2.0\n\nCopyright 2020 Carlos Seer");
+		txtpnAboutBabyCountdown.setBounds(134, 29, 250, 90);
 		contentPanel.add(txtpnAboutBabyCountdown);
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon(AboutProgram.class.getResource("/resources/Information.png")));
-		lblNewLabel.setBounds(12, 12, 143, 127);
+		lblNewLabel.setIcon(new ImageIcon(AboutProgram.class.getResource("/resources/Information48.png")));
+		lblNewLabel.setBounds(26, 29, 90, 81);
 		contentPanel.add(lblNewLabel);
 		{
 			JPanel buttonPane = new JPanel();

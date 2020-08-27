@@ -37,9 +37,11 @@ public class Countdown {
 
 	private JFrame frmBabyCountdown;
 	String strPhrase = "for Baby to arrive";
-	LocalDate dueDate = LocalDate.now();
+	LocalDate dueDate = LocalDate.now().plusMonths(9);
 	String strWeeks =  "0 weeks";
 	String strDays = "0 days";	
+	boolean showDueDate = true;
+	String strDueDate = "";
 	
 	
 	static boolean configOK = false;
@@ -52,16 +54,27 @@ public class Countdown {
 			if (!f.exists()) {
 				f = null;
 				System.out.println("ERROR in Countdown: countdown.ini do not exist");
-				displayConfigDialog();
+				displayConfigDialog(true);
 				//TODO Validar si se creo exitosament archivo INI
 		   	} 
 			// [Por ahora] asumo que si no existia, se creo exitosamente archivo INI
 			f = new File("countdown.ini");
+			
 			//Parse values form INI file
 			Wini ini = new Wini(f);
-            strPhrase= ini.get("config", "phrase");
-            String sDueDate = ini.get("config", "duedate");           
-			dueDate = LocalDate.parse(sDueDate);
+
+            
+            String sDueDate = ini.get("config", "duedate");     
+            try {
+            	dueDate = LocalDate.parse(sDueDate);
+            } catch (Exception e) {
+            	System.out.println(e.getMessage());
+            	dueDate = LocalDate.now().plusMonths(9);
+            	ini.put("config", "duedate", dueDate.toString());
+            	ini.store();
+			}
+
+			
 			// Calculate period and update value of strWeeks and strDays
 			LocalDate now = LocalDate.now();
 			//LocalDate now = LocalDate.of(2020,8,22);
@@ -74,6 +87,28 @@ public class Countdown {
 			//String dueDate = "4/6/2021";
 			strWeeks =  lWeeks + " weeks";
 			strDays = days + " days";	
+			
+            strPhrase= ini.get("config", "phrase");
+            if (strPhrase == null) {
+            	strPhrase = "for Baby to arrive";
+            	ini.put("config", "phrase", strPhrase);
+            	ini.store();
+            }
+			
+			String sShowDueDate = ini.get("config", "showduedate");   
+			if (sShowDueDate==null) {
+				sShowDueDate = "true";
+            	ini.put("config", "showduedate", sShowDueDate);
+            	ini.store();
+			}
+			if (sShowDueDate.trim().equals("true")) {
+				showDueDate = true;
+				strDueDate = "DUE DATE: " + dueDate.getMonth() + " " +  dueDate.getDayOfMonth() + ", " + dueDate.getYear(); 
+			} else {
+				showDueDate = false;
+				strDueDate = ""; 				
+			}
+			
 			//TODO
 			System.out.println(sDueDate);		   	
 		}catch(Exception e) {
@@ -82,10 +117,12 @@ public class Countdown {
 		
 	}
 	
-	private void displayConfigDialog() {
+	private void displayConfigDialog(boolean tForceSave) {
 		ConfDialog confDialog = new ConfDialog();	
 		confDialog.setDueDate(dueDate.toString());
-		confDialog.setPrase(strPhrase);				
+		confDialog.setPrase(strPhrase);	
+		confDialog.setShowDueDate(showDueDate);
+		confDialog.setForceSave(tForceSave);
 		confDialog.setVisible(true);
 		//TODO
 		System.out.println("Despues de cerrar ConfigDialog");
@@ -124,10 +161,11 @@ public class Countdown {
 	private void initialize() {
 		readIni();					
 		frmBabyCountdown = new JFrame();
+		frmBabyCountdown.setResizable(false);
 		frmBabyCountdown.setIconImage(Toolkit.getDefaultToolkit().getImage(Countdown.class.getResource("/resources/012_026_newborn_infant_child_baby-256.png")));
 		frmBabyCountdown.setTitle("Baby Countdown");
 		frmBabyCountdown.getContentPane().setFont(new Font("SansSerif", Font.PLAIN, 12));
-		frmBabyCountdown.setBounds(100, 100, 410, 290);
+		frmBabyCountdown.setBounds(100, 100, 410, 305);
 		frmBabyCountdown.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmBabyCountdown.getContentPane().setLayout(null);
 		
@@ -156,6 +194,13 @@ public class Countdown {
 		lblPhrase.setBounds(67, 191, 282, 38);
 		frmBabyCountdown.getContentPane().add(lblPhrase);
 		
+		
+		JLabel lblDueDate = new JLabel(strDueDate);
+		lblDueDate.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDueDate.setFont(new Font("SansSerif", Font.ITALIC, 12));
+		lblDueDate.setBounds(67, 241, 282, 15);
+		frmBabyCountdown.getContentPane().add(lblDueDate);
+		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		toolBar.setBounds(6, 0, 398, 35);
@@ -164,11 +209,12 @@ public class Countdown {
 		JButton btnSetup = new JButton("");
 		btnSetup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				displayConfigDialog();
+				displayConfigDialog(false);
 				readIni();	
 				lblPhrase.setText(strPhrase);
 				lblWeeks.setText(strWeeks);
 				lblDays.setText(strDays);
+				lblDueDate.setText(strDueDate);
 				frmBabyCountdown.revalidate();
 				frmBabyCountdown.repaint();		
 			}
@@ -185,6 +231,7 @@ public class Countdown {
 		});
 		btnNewButton.setIcon(new ImageIcon(Countdown.class.getResource("/SmallIcons/Information24.png")));
 		toolBar.add(btnNewButton);
+
 		
 
 	}
